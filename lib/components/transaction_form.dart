@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key});
+  final void Function(String, double) onSubmit;
+
+  const TransactionForm({super.key, required this.onSubmit});
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController(); 
+  final titleController = TextEditingController();
+
   final valueController = TextEditingController();
+
+  _submitForm() {
+    // Recebe o valor com ',' e transforma em '.'
+    final valor = valueController.text.replaceAll(',', '.');
+
+    final title = titleController.text;
+    final value = double.tryParse(valor) ?? 0.0;
+
+    if (title.isNotEmpty || value <= 0) {
+      widget.onSubmit(title, value);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +42,8 @@ class _TransactionFormState extends State<TransactionForm> {
             ),
             TextField(
               controller: valueController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
               decoration: InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
@@ -35,10 +52,7 @@ class _TransactionFormState extends State<TransactionForm> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    print(titleController.text);
-                    print(valueController.text);
-                  },
+                  onPressed: _submitForm,
                   child: Text(
                     "Nova transação",
                     style: TextStyle(color: Colors.purple),
