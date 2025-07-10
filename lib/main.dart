@@ -14,6 +14,31 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expenses',
       home: MyHomePage(),
+      theme: ThemeData(
+        fontFamily: 'Quicksand',
+        useMaterial3: false,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleLarge: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.amber,
+          primary: Colors.purple,
+          secondary: Colors.amber,
+        ),
+      ),
     );
   }
 }
@@ -70,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Center(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Despesas Pessoais"),
+          title: Text(
+            "Despesas Pessoais",
+          ),
           actions: [
             IconButton(
               onPressed: () => _openTransactionFormModal(context),
